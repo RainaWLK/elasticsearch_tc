@@ -1,0 +1,28 @@
+version: '3.0'
+services:
+  es:
+    build: .
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m
+    environment:
+    - discovery.type=single-node
+    - "ES_JAVA_OPTS=-Xms256m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+
+volumes:
+  esdata1:
+    driver: local
+
+networks:
+  esnet:
